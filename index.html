@@ -1,171 +1,577 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GGAPP — Avaliação de Políticas Públicas</title>
-  <meta name="description" content="Gerência Geral de Avaliação de Políticas Públicas. Qualificamos decisões pela força da evidência." />
-  <meta property="og:title" content="GGAPP — Avaliação de Políticas Públicas" />
-  <meta property="og:description" content="Gerência Geral de Avaliação de Políticas Públicas. Qualificamos decisões pela força da evidência." />
-  <meta property="og:type" content="website" />
+  <title>GGAPP — Gerência Geral de Avaliação de Políticas Públicas</title>
+  <meta name="description" content="GGAPP — Qualificar as decisões públicas pela força da evidência." />
   <link rel="icon" href="assets/logo.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root{
+      /* Light theme — mantém identidade da marca (laranja + azul) */
+      --bg:#FFFFFF;
+      --panel:#FFFFFF;
+      --panel2:#F8FAFC;
+      --text:#0F172A;
+      --muted:#475569;
+      --border:rgba(15,23,42,.10);
+      --shadow:0 14px 40px rgba(15,23,42,.10);
+
+      --orange:#F49641;
+      --orange2:#FFB463;
+      --blue:#9ED3E0; /* faixa azul do logo */
+      --gray:#9AA3B2;
+
+      --radius:18px;
+      --max:1100px;
+    }*{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+      background:
+        radial-gradient(1100px 550px at 15% 10%, rgba(244,150,65,.16), transparent 62%),
+        radial-gradient(900px 480px at 90% 18%, rgba(158,211,224,.22), transparent 62%),
+        linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 55%, #FFFFFF 100%);
+      color:var(--text);
+      line-height:1.55;
+    }
+
+    a{color:inherit}
+    .container{max-width:var(--max); margin:0 auto; padding:0 20px}
+    .pill{
+      display:inline-flex; align-items:center; gap:.45rem;
+      padding:.35rem .7rem; border:1px solid var(--border);
+      border-radius:999px; color:var(--muted); background:rgba(15,23,42,.04);
+      font-weight:700; font-size:.85rem;
+    }
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px) saturate(140%);
+      background: rgba(255,255,255,.78);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      padding:14px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; text-decoration:none;
+      min-width:220px;
+    }
+    .brand img{width:38px; height:38px; object-fit:contain}
+    .brand strong{letter-spacing:.2px}
+    .brand span{display:block; font-size:.82rem; color:var(--muted); margin-top:2px}
+
+    nav ul{list-style:none; display:flex; gap:10px; padding:0; margin:0; flex-wrap:wrap; justify-content:flex-end}
+    nav a{
+      text-decoration:none;
+      padding:.5rem .75rem;
+      border-radius:999px;
+      border:1px solid transparent;
+      color:var(--muted);
+      font-weight:800;
+      font-size:.9rem;
+      transition:.18s ease;
+    }
+    nav a:hover{color:var(--text); border-color:var(--border); background:rgba(15,23,42,.04)}
+    nav a.cta{
+      color:#0B0D12;
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange2) 100%);
+      border-color: transparent;
+      box-shadow: 0 12px 24px rgba(244,150,65,.25);
+    }
+    nav a.cta:hover{filter:brightness(1.05)}
+    .menu-btn{display:none}
+
+    /* Hero */
+    .hero{padding:56px 0 26px}
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.92));
+      border:1px solid var(--border);
+      border-radius: calc(var(--radius) + 10px);
+      box-shadow: var(--shadow);
+      padding:26px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(700px 360px at 20% 15%, rgba(244,150,65,.24), transparent 60%),
+        radial-gradient(520px 280px at 90% 25%, rgba(158,211,224,.18), transparent 60%);
+      pointer-events:none;
+      opacity:.70;
+    }
+    .hero-card > *{position:relative}
+
+    .hero-grid{display:grid; grid-template-columns: 1.05fr .95fr; gap:18px; align-items:stretch}
+    .hero-copy{
+      padding:2px 2px 2px 2px;
+    }
+    h1{margin:10px 0 10px; font-size:2.15rem; line-height:1.15}
+    .subtitle{color:var(--muted); font-size:1.05rem; margin:0 0 16px}
+    .accent-line{
+      height:6px; width:120px; border-radius:999px;
+      background: linear-gradient(90deg, var(--blue), rgba(158,211,224,.15));
+      border:1px solid rgba(158,211,224,.22);
+      margin:12px 0 14px;
+    }
+    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:.75rem 1rem; border-radius:999px;
+      border:1px solid var(--border);
+      text-decoration:none; font-weight:900;
+      background:rgba(15,23,42,.04);
+      color:var(--text);
+      transition:.18s ease;
+    }
+    .btn:hover{transform:translateY(-1px); background:rgba(15,23,42,.06)}
+    .btn.primary{
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange2) 100%);
+      color:#0B0D12;
+      border-color:transparent;
+      box-shadow: 0 14px 28px rgba(244,150,65,.22);
+    }
+
+    /* Hero logo highlight */
+    .hero-logo-wrap{
+      display:grid;
+      place-items:center;
+      padding:18px;
+    }
+    .logo-badge{
+      width:240px; height:240px;
+      border-radius:32px;
+      display:flex; align-items:center; justify-content:center;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(244,150,65,.42), rgba(244,150,65,.14) 55%, rgba(255,255,255,.03) 100%);
+      border:1px solid rgba(244,150,65,.38);
+      box-shadow:
+        0 26px 60px rgba(244,150,65,.24),
+        0 16px 40px rgba(0,0,0,.55);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo-badge:after{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(380px 200px at 70% 20%, rgba(158,211,224,.18), transparent 62%);
+      pointer-events:none;
+    }
+    .logo-badge img{
+      width:170px;
+      height:auto;
+      filter: drop-shadow(0 16px 22px rgba(0,0,0,.45));
+      position:relative;
+      z-index:1;
+    }
+    .logo-caption{
+      margin-top:12px;
+      text-align:center;
+      color:var(--muted);
+      font-weight:800;
+      font-size:.92rem;
+    }
+
+    .side{display:grid; gap:12px}
+    .mini{
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.86);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .mini h3{margin:0 0 6px; font-size:1rem}
+    .mini p{margin:0; color:var(--muted)}
+    .kpi-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .kpi{
+      flex:1; min-width:140px;
+      padding:12px 14px; border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.86);
+    }
+    .kpi .label{color:var(--muted); font-size:.82rem; font-weight:800}
+    .kpi .value{font-size:1.05rem; font-weight:950; margin-top:4px}
+
+    /* Sections */
+    section{padding:34px 0}
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .section-title h2{margin:0; font-size:1.45rem}
+    .section-title p{margin:0; color:var(--muted); max-width:62ch}
+
+    .grid{display:grid; gap:14px}
+    .grid-2{grid-template-columns:repeat(2, minmax(0, 1fr))}
+    .grid-3{grid-template-columns:repeat(3, minmax(0, 1fr))}
+
+    .card{
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.86);
+      box-shadow: var(--shadow);
+      padding:18px;
+    }
+    .card h3{margin:0 0 8px; font-size:1.05rem}
+    .card p{margin:0; color:var(--muted)}
+    .icon{
+      width:40px; height:40px; border-radius:14px;
+      display:inline-flex; align-items:center; justify-content:center;
+      background: rgba(244,150,65,.12);
+      border:1px solid rgba(244,150,65,.22);
+      color: var(--orange2);
+      font-weight:950;
+      margin-bottom:10px;
+    }
+    .tag{
+      display:inline-flex; align-items:center;
+      padding:.25rem .55rem; border-radius:999px;
+      border:1px solid var(--border); color:var(--muted);
+      font-weight:850; font-size:.78rem;
+      background: rgba(255,255,255,.86);
+    }
+
+    /* Footer */
+    footer{
+      padding:26px 0 40px;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+    }
+    .footer-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
+    .foot-brand{display:flex; align-items:center; gap:10px}
+    .foot-brand img{width:28px; height:28px; object-fit:contain}
+    .small{font-size:.9rem}
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero-grid{grid-template-columns:1fr}
+      .hero-logo-wrap{padding:8px 0 0}
+      .logo-badge{width:220px;height:220px}
+      .logo-badge img{width:160px}
+    }
+    @media (max-width: 760px){
+      nav ul{display:none}
+      .menu-btn{
+        display:inline-flex; align-items:center; justify-content:center;
+        width:44px; height:44px; border-radius:14px;
+        border:1px solid var(--border);
+        background:rgba(15,23,42,.04);
+        color:var(--text);
+        cursor:pointer;
+      }
+      .mobile-nav{display:none; padding:0 0 12px}
+      .mobile-nav a{
+        display:block;
+        padding:10px 12px;
+        margin:6px 0;
+        border-radius:14px;
+        border:1px solid var(--border);
+        background:rgba(255,255,255,.92);
+        text-decoration:none;
+        color:var(--muted);
+        font-weight:900;
+      }
+      .mobile-nav a.cta{color:#0B0D12}
+      .grid-2,.grid-3{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
-  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-  <header class="header" role="banner">
-    <div class="container header-inner">
-      <div class="brand">
-        <img src="assets/logo.png" alt="Logo GGAPP: barras laranja e lupa com globo" class="logo" />
-        <span class="brand-text">GGAPP</span>
-      </div>
-      <nav aria-label="Navegação primária">
-        <button class="menu-btn" aria-expanded="false" aria-controls="menu">☰</button>
-        <ul id="menu" class="menu">
-          <li><a href="#inicio">Início</a></li>
+<header>
+  <div class="container">
+    <div class="nav">
+      <a class="brand" href="#topo" aria-label="Ir para o topo">
+        <img src="assets/logo.png" alt="Logo GGAPP" />
+        <div>
+          <strong>GGAPP</strong>
+          <span>Gerência Geral de Avaliação de Políticas Públicas</span>
+        </div>
+      </a>
+
+      <nav aria-label="Navegação principal">
+        <ul>
           <li><a href="#missao">Missão</a></li>
-          <li><a href="#visao-valores">Visão & Valores</a></li>
-          <li><a href="#metodologia">Metodologia</a></li>
-          <li><a href="#projetos">Projetos</a></li>
-          <li><a href="#publicacoes">Publicações</a></li>
-          <li><a href="#contato">Contato</a></li>
+          <li><a href="#atuacao">O que fazemos</a></li>
+          <li><a href="#visao">Visão</a></li>
+          <li><a href="#valores">Valores</a></li>
+          <li><a href="#produtos">Produtos</a></li>
+          <li><a class="cta" href="#produtos">Conheça nossas entregas</a></li>
         </ul>
       </nav>
-      <button id="themeToggle" class="toggle" aria-label="Alternar tema">🌙</button>
+
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
     </div>
-  </header>
 
-  <main id="conteudo">
-    <section id="inicio" class="hero">
-      <div class="container hero-inner">
-        <div class="hero-text">
-          <h1>GGAPP — Gerência Geral de Avaliação de Políticas Públicas</h1>
-          <p class="sub">Qualificar as decisões públicas pela força da evidência.</p>
-          <div class="hero-ctas">
-            <a class="btn primary" href="#metodologia">Conheça a Metodologia</a>
-            <a class="btn" href="#contato">Fale com a GGAPP</a>
-          </div>
-        </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="bars">
-            <span style="--h:45%"></span>
-            <span style="--h:70%"></span>
-            <span style="--h:55%"></span>
-            <span style="--h:95%"></span>
-          </div>
-          <div class="lens"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="missao" class="section">
-      <div class="container">
-        <h2>Missão</h2>
-        <p class="lead">Nossa missão é <strong>qualificar as decisões públicas pela força da evidência</strong>.</p>
-      </div>
-    </section>
-
-    <section id="visao-valores" class="section alt">
-      <div class="container">
-        <h2>Visão & Valores</h2>
-        <div class="vision">
-          <p><strong>Visão:</strong> Ser um núcleo de excelência, que consolida uma cultura de políticas públicas orientadas por evidências.</p>
-        </div>
-        <div class="grid values">
-          <article class="card"><h3>Replicabilidade</h3><p>Resultados e métodos verificáveis e reaplicáveis.</p></article>
-          <article class="card"><h3>Parcimônia</h3><p>Soluções tão simples quanto possível e tão completas quanto necessário.</p></article>
-          <article class="card"><h3>Sinergia</h3><p>Cooperação entre áreas e atores para potencializar resultados.</p></article>
-          <article class="card"><h3>Engenhosidade</h3><p>Criatividade aplicada para resolver problemas públicos complexos.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section id="metodologia" class="section">
-      <div class="container">
-        <h2>Metodologia</h2>
-        <ol class="timeline">
-          <li><span>Diagnóstico</span><p>Mapeamos o problema público e o contexto institucional.</p></li>
-          <li><span>Perguntas de Avaliação</span><p>Definimos objetivos, hipóteses e indicadores.</p></li>
-          <li><span>Dados & Métodos</span><p>Integramos bases, garantimos qualidade e escolhemos métodos adequados.</p></li>
-          <li><span>Evidências & Resultados</span><p>Geramos análises e visualizações para tomada de decisão.</p></li>
-          <li><span>Recomendação & Monitoramento</span><p>Traduzimos achados em ações e acompanhamos sua implementação.</p></li>
-        </ol>
-      </div>
-    </section>
-
-    <section id="projetos" class="section alt">
-      <div class="container">
-        <h2>Projetos</h2>
-        <div class="grid cards-3">
-          <article class="card">
-            <h3>Diagnóstico de Acesso à Saúde</h3>
-            <p>Integração de dados para reduzir tempos de espera e filas.</p>
-            <div class="tags"><span>Saúde</span><span>Dados</span></div>
-          </article>
-          <article class="card">
-            <h3>Aprendizado Escolar</h3>
-            <p>Indicadores de fluxo, permanência e desempenho por território.</p>
-            <div class="tags"><span>Educação</span><span>Avaliação</span></div>
-          </article>
-          <article class="card">
-            <h3>Mobilidade Segura</h3>
-            <p>Mapeamento de pontos críticos e simulações de intervenção.</p>
-            <div class="tags"><span>Mobilidade</span><span>Geoprocessamento</span></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="publicacoes" class="section">
-      <div class="container">
-        <h2>Publicações</h2>
-        <ul class="pubs">
-          <li><strong>Nota Técnica 01/2025:</strong> Indicadores de desempenho municipal.</li>
-          <li><strong>Relatório 2025:</strong> Avaliação de impacto ex post em programas sociais.</li>
-          <li><strong>Dashboard:</strong> Monitoramento de metas prioritárias.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="contato" class="section alt">
-      <div class="container">
-        <h2>Contato</h2>
-        <form name="contato" method="POST" data-netlify="true">
-          <input type="hidden" name="form-name" value="contato" />
-          <div class="form-grid">
-            <label>Nome
-              <input required type="text" name="nome" />
-            </label>
-            <label>E-mail
-              <input required type="email" name="email" />
-            </label>
-            <label>Órgão/Secretaria
-              <input type="text" name="orgao" />
-            </label>
-            <label>Mensagem
-              <textarea required name="mensagem" rows="4"></textarea>
-            </label>
-            <label class="consent">
-              <input type="checkbox" name="lgpd" required />
-              Concordo com o tratamento dos dados para retorno de contato (LGPD).
-            </label>
-          </div>
-          <button class="btn primary" type="submit">Enviar</button>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="brand small">
-        <img src="assets/logo.png" alt="GGAPP" class="logo small" />
-        <span>GGAPP — Gerência Geral de Avaliação de Políticas Públicas</span>
-      </div>
-      <p>© <span id="year"></span> GGAPP. Todos os direitos reservados.</p>
+    <div class="mobile-nav" id="mobileNav" aria-label="Menu mobile">
+      <a href="#missao">Missão</a>
+      <a href="#atuacao">O que fazemos</a>
+      <a href="#visao">Visão</a>
+      <a href="#valores">Valores</a>
+      <a href="#produtos">Produtos</a>
+      <a class="cta" href="#produtos">Conheça nossas entregas</a>
     </div>
-  </footer>
+  </div>
+</header>
 
-  <script src="script.js"></script>
+<main id="topo">
+  <section class="hero">
+    <div class="container">
+      <div class="hero-card">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <span class="pill">SEPLAN • Farol dos Dados</span>
+            <div class="accent-line"></div>
+            <h1>Qualificar as decisões públicas pela força da evidência.</h1>
+            <p class="subtitle">
+              A GGAPP apoia a gestão municipal com avaliação de políticas públicas, ciência de dados aplicada e
+              sistematização de metodologias para decisões baseadas em evidências.
+            </p>
+            <div class="hero-actions">
+              <a class="btn primary" href="#missao">Ver missão</a>
+              <a class="btn" href="#atuacao">Nossas frentes</a>
+              <a class="btn" href="#produtos">Produtos</a>
+            </div>
+
+            <div class="side" style="margin-top:16px">
+              <div class="mini">
+                <h3>Quem somos</h3>
+                <p>Gerência Geral de Avaliação de Políticas Públicas — GGAPP.</p>
+                <div class="kpi-row">
+                  <div class="kpi">
+                    <div class="label">Foco</div>
+                    <div class="value">Evidência + Impacto</div>
+                  </div>
+                  <div class="kpi">
+                    <div class="label">Entrega</div>
+                    <div class="value">Subsídios à gestão</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini">
+                <h3>Princípios</h3>
+                <p>Rigor, clareza e utilidade prática para resolver problemas urbanos complexos.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-logo-wrap" aria-label="Logo GGAPP em destaque">
+            <div class="logo-badge">
+              <img src="assets/logo.png" alt="Logo GGAPP em destaque" />
+            </div>
+            <div class="logo-caption">Gerência Geral de Avaliação de Políticas Públicas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="missao">
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2>Missão</h2>
+          <p>Qualificar as decisões públicas pela força da evidência para apoiar:</p>
+        </div>
+        <span class="tag">A Missão da GGAPP</span>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="icon">✓</div>
+          <h3>A eficácia governamental</h3>
+          <p>Garantindo que os recursos sejam aplicados onde geram maior impacto social.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📊</div>
+          <h3>A cultura de dados</h3>
+          <p>Consolidando uma mentalidade de gestão orientada por resultados verificáveis.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧠</div>
+          <h3>A resolução de problemas complexos</h3>
+          <p>Utilizando criatividade e rigor científico para enfrentar desafios urbanos.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🔎</div>
+          <h3>A transparência metodológica</h3>
+          <p>Promovendo a replicabilidade e a clareza nos processos de avaliação.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="atuacao">
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2>O que fazemos</h2>
+          <p>Nossas frentes de atuação estruturam entregas técnicas e aplicadas para a gestão municipal.</p>
+        </div>
+        <span class="tag">Nossas Frentes de Atuação</span>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="icon">🏛️</div>
+          <h3>Avaliação de Políticas Públicas</h3>
+          <p>Analisamos o desempenho e o impacto de programas municipais para guiar ajustes e melhorias.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧩</div>
+          <h3>Ciência de Dados Aplicada</h3>
+          <p>Utilizamos técnicas avançadas de análise e modelagem para compreender fenômenos sociais e econômicos.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📚</div>
+          <h3>Divulgação de Metodologias</h3>
+          <p>Sistematizamos e compartilhamos o conhecimento técnico produzido para fortalecer a administração.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧭</div>
+          <h3>Suporte a Decisões Baseadas em Evidências</h3>
+          <p>Transformamos análises complexas em subsídios diretos para a alta gestão.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visao">
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2>Visão</h2>
+          <p>Direção estratégica do núcleo e do papel institucional da GGAPP.</p>
+        </div>
+        <span class="tag">Nossa Visão</span>
+      </div>
+
+      <div class="card">
+        <h3>Ser um núcleo de excelência</h3>
+        <p style="font-size:1.06rem">
+          Ser um núcleo de excelência, que consolida uma cultura de políticas públicas orientadas por evidências.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="valores">
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2>Valores</h2>
+          <p>Princípios que orientam a forma como produzimos, comunicamos e aplicamos conhecimento.</p>
+        </div>
+        <span class="tag">Valores da GGAPP</span>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Replicabilidade</h3>
+          <p>Métodos transparentes, rastreáveis e reprodutíveis para garantir confiança.</p>
+        </div>
+        <div class="card">
+          <h3>Parcimônia</h3>
+          <p>Soluções objetivas, com foco no essencial e no que gera valor para a decisão.</p>
+        </div>
+        <div class="card">
+          <h3>Sinergia</h3>
+          <p>Trabalho colaborativo e integração com áreas técnicas e de ponta.</p>
+        </div>
+        <div class="card">
+          <h3>Engenhosidade</h3>
+          <p>Criatividade e rigor científico para enfrentar desafios urbanos complexos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="produtos">
+    <div class="container">
+      <div class="section-title">
+        <div>
+          <h2>Nossos Produtos</h2>
+          <p>Entregas típicas que traduzem análises em instrumentos de gestão.</p>
+        </div>
+        <span class="tag">Nossos Produtos</span>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="icon">📈</div>
+          <h3>Estudos de Impacto e Desigualdade (ex.: Gini)</h3>
+          <p>Análises detalhadas sobre indicadores socioeconômicos do município.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🎯</div>
+          <h3>Metodologias de Ranqueamento e Vulnerabilidade</h3>
+          <p>Modelos para identificação de áreas prioritárias (ex.: Vulnerabilidade Habitacional).</p>
+        </div>
+        <div class="card">
+          <div class="icon">🌿</div>
+          <h3>Monitoramento Ambiental por Sensoriamento Remoto</h3>
+          <p>Cálculos de variação de área verde e análises geoespaciais (ex.: NDVI Jiquiá).</p>
+        </div>
+        <div class="card">
+          <div class="icon">🗺️</div>
+          <h3>Mapeamentos Temáticos Estratégicos</h3>
+          <p>Diagnósticos territoriais específicos, como o perfil de estabelecimentos (Desertos Alimentares).</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧾</div>
+          <h3>Relatórios de Avaliação de Programas (ex.: USF+)</h3>
+          <p>Documentos técnicos que mensuram a eficiência de serviços públicos essenciais.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧰</div>
+          <h3>Suporte à Alta Gestão</h3>
+          <p>Notas técnicas e subsídios diretos para orientar decisões baseadas em evidências.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3>Conteúdo em padronização SEPLAN</h3>
+        <p style="margin:0; color:var(--muted)">
+          Estrutura organizada para apresentação institucional: Missão, Visão, Valores, O que fazemos e Produtos.
+          Ajustes finos podem ser feitos para refletir com precisão a rotina e entregas da gerência.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div class="foot-brand">
+      <img src="assets/logo.png" alt="GGAPP" />
+      <div>
+        <div><strong>GGAPP</strong> • Gerência Geral de Avaliação de Políticas Públicas</div>
+        <div class="small">SEPLAN • Farol dos Dados</div>
+      </div>
+    </div>
+    <div class="small">© <span id="year"></span> GGAPP — Prefeitura do Recife</div>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  menuBtn?.addEventListener('click', () => {
+    const open = mobileNav.style.display === 'block';
+    mobileNav.style.display = open ? 'none' : 'block';
+    menuBtn.textContent = open ? '☰' : '✕';
+  });
+  mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileNav.style.display = 'none';
+    menuBtn.textContent = '☰';
+  }));
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
